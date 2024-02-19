@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "884044940776",
+    "project_id": "talk-hub-d1cf6",
+    "storage_bucket": "talk-hub-d1cf6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884044940776:android:d3aacacb42d9fce99a105d",
+        "android_client_info": {
+          "package_name": "com.example.talk_hub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "884044940776-fmkfnhjgmk0vbifr0aqok9etdn8cl9rs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.talk_hub",
+            "certificate_hash": "81ea32afda345e934fcef6abe272ea239c8d7038"
+          }
+        },
+        {
+          "client_id": "884044940776-baq0n2k7277lhdp1bbls4see92it443e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8e9SYnbQjJIkN1bkeghd6kR35KyTqkvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "884044940776-baq0n2k7277lhdp1bbls4see92it443e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "884044940776-722ddrusnqjmpju90vf0b21qnb83n50m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.talkHub"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
