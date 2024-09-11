@@ -12,6 +12,7 @@ import 'package:talk_hub/helper/dialogue.dart';
 import 'package:talk_hub/model/chat_user_model.dart';
 import 'package:talk_hub/screens/auth/login_screen.dart';
 import 'package:talk_hub/widgets/chat_user_card.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class ProfilePage extends StatefulWidget {
   final ChatUserModel user;
@@ -33,7 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text("Profile",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Profile",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
@@ -41,6 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Dialogue.showProgressBar(context);
               await APIs.firebaseAuth.signOut().then((value) async {
                 await GoogleSignIn().signOut().then((value) {
+                  ZegoUIKitPrebuiltCallInvitationService().uninit();
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -110,13 +115,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(widget.user.email,style: TextStyle(color: Colors.white54)),
+                Text(widget.user.email,
+                    style: TextStyle(color: Colors.white54)),
                 const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
                   initialValue: widget.user.name,
-                  style:  TextStyle(color: Colors.white54),
+                  style: TextStyle(color: Colors.white54),
                   onSaved: (newValue) => APIs.me.name = newValue ?? '',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -165,7 +171,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
-                        
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -251,8 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
 
                       if (image != null) {
-                        log(
-                            'Image path: ${image.path} -- MimeType: ${image.mimeType}');
+                        log('Image path: ${image.path} -- MimeType: ${image.mimeType}');
                         setState(() {
                           _image = image.path;
                         });
@@ -275,4 +279,5 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+
 }

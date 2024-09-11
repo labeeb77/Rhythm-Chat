@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,12 +8,10 @@ import 'package:talk_hub/model/chat_user_model.dart';
 import 'package:talk_hub/model/message_model.dart';
 
 class APIs {
+
   static FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
-
   static FirebaseStorage storage = FirebaseStorage.instance;
-
   static User get user => firebaseAuth.currentUser!;
 
   static late ChatUserModel me;
@@ -152,11 +149,9 @@ class APIs {
     await sendMessage(chatUser, imageUrl, Type.image);
   }
 
-
   //-------  Upload Status ------//
 
-  
-static Future<void> storeStatus({
+  static Future<void> storeStatus({
   required String userName,
   required String userPhoto, 
   required String userId,
@@ -205,5 +200,4 @@ static Future<List<DocumentSnapshot<Map<String, dynamic>>>> getOtherStatuses() a
     String downloadUrl = await ref.getDownloadURL();
     return downloadUrl;
   }
-
 }

@@ -57,6 +57,9 @@
 		</array>
 	</dict>
 </array>
+
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app needs microphone and camera access to enable high-quality video calls with other users. You'll be able to see and hear each other in real-time, perfect for staying connected with friends and family.</string>
     <key>NSPhotoLibraryUsageDescription</key>
 	<string>App requires access to the photo library for picking picture.</string>
 	<key>NSCameraUsageDescriptions</key>

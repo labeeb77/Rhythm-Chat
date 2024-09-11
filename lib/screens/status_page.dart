@@ -122,7 +122,10 @@ class _StatusPageState extends State<StatusPage> {
                       return Column(
                         children: [
                           ListTile(
-                            onTap: () {
+                           
+                            leading: InkWell(
+                               onTap: () {
+                               
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -135,8 +138,9 @@ class _StatusPageState extends State<StatusPage> {
                                     ),
                                   ));
                             },
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(imageUrls[0]),
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(APIs.user.photoURL!),
+                              ),
                             ),
                             title: Text(
                               APIs.me.name,
@@ -236,7 +240,7 @@ class _StatusPageState extends State<StatusPage> {
 
                           return ListTile(
                             leading: CircleAvatar(
-                              backgroundImage: NetworkImage(data['imageUrl']),
+                              backgroundImage: NetworkImage(data['userPhoto']),
                             ),
                             title: Text(
                               data['userName'],
@@ -278,7 +282,7 @@ class _StatusPageState extends State<StatusPage> {
     );
 
     if (context.mounted) {
-      if (pickedFiles != null && pickedFiles.isNotEmpty) {
+      if (pickedFiles.isNotEmpty) {
         List<File> pickedImages =
             pickedFiles.map((file) => File(file.path)).toList();
         await showDialog(
@@ -374,31 +378,7 @@ class _StatusPageState extends State<StatusPage> {
     }
   }
 
-  void _pickVideo() async {
-    _videoUrl = pickVideo();
-    _initializeVideoPlayer();
-  }
 
-  void _initializeVideoPlayer() {
-    _videoPlayerController = VideoPlayerController.file(File(_videoUrl!))
-      ..initialize().then((value) {
-        setState(() {});
-        _videoPlayerController!.play();
-      });
-  }
 
-  Widget _videoPreviewWidget() {
-    if (_videoPlayerController != null) {
-      return AspectRatio(
-        aspectRatio: _videoPlayerController!.value.aspectRatio,
-        child: VideoPlayer(_videoPlayerController!),
-      );
-    } else {
-      return const CircularProgressIndicator();
-    }
-  }
 
-  void _uploadVideo() async {
-    _downLoadUrl = await APIs.uploadVideo(_videoUrl!);
-  }
 }

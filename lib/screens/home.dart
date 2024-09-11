@@ -101,13 +101,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              await GoogleSignIn().signOut();
-            },
-            child: const Icon(Icons.add_comment),
-          ),
+          
           body: SafeArea(
               child: StreamBuilder(
             stream: APIs.getAllusers(),

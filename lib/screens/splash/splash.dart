@@ -5,8 +5,6 @@ import 'package:talk_hub/api/apis.dart';
 import 'package:talk_hub/screens/auth/login_screen.dart';
 import 'package:talk_hub/screens/bottom%20nav/bottom_nav.dart';
 
-
-
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -19,10 +17,9 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void initState() {
-
     super.initState();
 
- Timer(
+    Timer(
       const Duration(seconds: 3),
       () {
         if (APIs.firebaseAuth.currentUser != null) {
@@ -66,10 +63,10 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
- Image.asset("assets/chat.png", height: 90),
-
-
-            const SizedBox(height: 10,),
+            Image.asset("assets/chat.png", height: 90),
+            const SizedBox(
+              height: 10,
+            ),
             Center(
               child: AnimatedBuilder(
                 animation: _animation,
@@ -81,17 +78,18 @@ class _SplashScreenState extends State<SplashScreen>
                       style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white, // Text color set to white for visibility
-                        
-                        
+                        color: Colors
+                            .white, // Text color set to white for visibility
                       ),
                     ),
-                    
                   );
                 },
               ),
             ),
-           const Text('Your instant messenger',style: TextStyle(color: Colors.white),)
+            const Text(
+              'Your instant messenger',
+              style: TextStyle(color: Colors.white),
+            )
           ],
         ),
       ),

@@ -8,11 +8,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:talk_hub/api/apis.dart';
 import 'package:talk_hub/model/chat_user_model.dart';
 import 'package:talk_hub/model/message_model.dart';
+import 'package:talk_hub/screens/call_invitation_page.dart';
+
+import 'package:talk_hub/utils/settings.dart';
 import 'package:talk_hub/widgets/message_card.dart';
 import 'package:flutter/foundation.dart' as foundation;
+import 'package:uuid/uuid.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUserModel user;
@@ -24,9 +30,15 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   List<MessageModel> _list = [];
-  bool _showImoji = false,_isUploading = false;
+  bool _showImoji = false, _isUploading = false;
 
   final _textEditingController = TextEditingController();
+  @override
+  void initState() {
+   Zego.initZego();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -34,9 +46,16 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.black,
           elevation: 10,
+          actions: [
+                         sendCallButton(isVideoCall: false, invintee: widget.user.id),
+                         const SizedBox(width: 10,),
+                                       sendCallButton(isVideoCall: true, invintee: widget.user.id),
+                                       const SizedBox(width: 10,),
+       
+          ],
           title: InkWell(
             onTap: () {},
             child: Row(
@@ -44,13 +63,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(50),
                   child: CachedNetworkImage(
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.fill,
-                      errorWidget: (context, url, error) => const CircleAvatar(
-                            child: Icon(CupertinoIcons.person),
-                          ),
-                      imageUrl: widget.user.image,),
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.fill,
+                    errorWidget: (context, url, error) => const CircleAvatar(
+                      child: Icon(CupertinoIcons.person),
+                    ),
+                    imageUrl: widget.user.image,
+                  ),
                 ),
                 const SizedBox(
                   width: 15,
@@ -60,7 +80,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     Text(
                       widget.user.name,
-                      style: const TextStyle(fontSize: 17,color: Colors.white,fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
                     const Text(
                       'last seen at 10.00',
@@ -113,12 +136,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
-            if(_isUploading)
-            const Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8,horizontal: 20),
-                child: CircularProgressIndicator(strokeWidth: 2,))),
+            if (_isUploading)
+              const Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ))),
             _chatInput(),
             if (_showImoji)
               SizedBox(
@@ -139,12 +165,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _chatInput() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 25,horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
       child: Row(
         children: [
           Expanded(
             child: GlassContainer(
-            borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20),
               child: Row(
                 children: [
                   IconButton(
@@ -171,23 +197,24 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                     maxLines: null,
                     decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: 'Type somthing...',hintStyle: TextStyle(color: Colors.white60)),
+                        border: InputBorder.none,
+                        hintText: 'Type somthing...',
+                        hintStyle: TextStyle(color: Colors.white60)),
                   )),
                   IconButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         final ImagePicker picker = ImagePicker();
 
-                        final List<XFile> images = await picker.pickMultiImage(
-                             imageQuality: 70);
+                        final List<XFile> images =
+                            await picker.pickMultiImage(imageQuality: 70);
 
-                        for(var i in images){
+                        for (var i in images) {
                           log('Image Path: ${i.path}');
                           setState(() {
                             _isUploading = true;
                           });
-                          await APIs.sendChatImage(
-                              widget.user, File(i.path));
-                              setState(() {
+                          await APIs.sendChatImage(widget.user, File(i.path));
+                          setState(() {
                             _isUploading = false;
                           });
                         }
@@ -211,7 +238,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                           await APIs.sendChatImage(
                               widget.user, File(image.path));
-                              setState(() {
+                          setState(() {
                             _isUploading = false;
                           });
                         }
@@ -224,7 +251,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
-          SizedBox(width: 5,),
+          const SizedBox(
+            width: 5,
+          ),
           MaterialButton(
             onPressed: () {
               if (_textEditingController.text.isNotEmpty) {
@@ -248,4 +277,33 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  //  CALL BUTTONS
+
+  Widget sendCallButton({
+    required bool isVideoCall,
+    required String invintee,
+    void Function(String code, String message, List<String>)? onCallFinished,
+    
+
+  }){
+   
+     final invinteeName =  getInvites(invintee);
+    setState(() {});
+    return ZegoSendCallInvitationButton(
+        isVideoCall: isVideoCall,
+        invitees: invinteeName,
+        resourceID: 'zego_data',
+        iconSize: const Size(30, 30),
+        buttonSize: const Size(30, 30),
+        onPressed: onCallFinished,
+      );
+
+  }
+
+List<ZegoUIKitUser> getInvites(String invintee){
+  final invitees = <ZegoUIKitUser>[];
+  return invitees;
+}
+  
 }

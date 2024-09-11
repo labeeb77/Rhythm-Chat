@@ -1,0 +1,2 @@
+const appId = 822532266;
+const appSign = 'e1e8a1102581070d2332bbea0191c44eaf64f139be738979a3dfd1b57f4ee469';
